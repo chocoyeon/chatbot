@@ -4,12 +4,12 @@ from openai import OpenAI
 # Show title and description.
 st.title("💬 yeon's ChatBot")
 st.write(
-    "고민이 있을 때 부담 없이 이야기할 수 있는 마음 talk 친구에요. 언제든지 편한 마음으로 찾아와 주세요 ^^*"
+    "혼자 고민하기 어려운 순간, 가볍게 이야기 나눌 수 있는 마음 토크 친구예요. 💛\n"
+    "어떤 이야기도 괜찮아요. 편안한 마음으로 찾아와 주세요. 😊\n"
+    "함께 생각해 보고, 조금 더 가벼운 마음이 될 수 있도록 도와드릴게요!"
 )
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
+
 openai_api_key = st.text_input("OpenAI API Key", type="password")
 if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
@@ -18,8 +18,17 @@ else:
     # Create an OpenAI client.
     client = OpenAI(api_key=openai_api_key)
 
-    # Create a session state variable to store the chat messages. This ensures that the
-    # messages persist across reruns.
+if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
+
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
+    ]
+    
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
