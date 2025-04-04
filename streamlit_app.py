@@ -29,10 +29,9 @@ for message in st.session_state.messages:
             st.markdown(message["content"])
 
 if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
-
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
-            st.markdown(prompt)
+        st.markdown(prompt)
 
  stream = client.chat.completions.create(
             model="gpt-3.5-turbo",
