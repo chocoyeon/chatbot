@@ -32,21 +32,29 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
     ]
-# 사용자 입력 받기
-prompt = st.chat_input("무엇이든 편하게 이야기해 주세요.")
 
-if prompt:
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+
+# 사용자 입력 받기
+if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # OpenAI API 응답 생성 (예외 처리 추가)
-    try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
-        )
+    stream = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages
+        ],
+        stream=True,
+    )
 
+
+    
         # 응답 데이터 확인 및 저장
         if response and response.choices:
             assistant_response = response.choices[0].message.content
