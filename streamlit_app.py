@@ -22,10 +22,10 @@ if not openai_api_key:
 
 # OpenAI 클라이언트 생성
 try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
-        )
+    client = openai.OpenAI(api_key=openai_api_key)
+except Exception as e:
+    st.error(f"🚨 OpenAI API 클라이언트를 생성하는 중 오류 발생: {e}")
+    st.stop()
 
 # 초기 메시지
 if "messages" not in st.session_state:
@@ -33,10 +33,10 @@ if "messages" not in st.session_state:
         {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
     ]
     
-if len(st.session_state.messages) > 0:
-    for message in st.session_state.messages[-1:]:  # 최신 메시지만 표시
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+# 기존 메시지 표시
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
 # 사용자 입력 받기
 if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
@@ -44,7 +44,8 @@ if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-   try:
+    # OpenAI API 호출 (예외 처리 추가)
+    try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
@@ -61,8 +62,7 @@ if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
             st.error("⚠️ 응답이 비어 있습니다. 다시 시도해 주세요.")
 
     except Exception as e:
-        # API 키 오류 메시지 추가
         if "401" in str(e):
             st.error("🚨 OpenAI API 호출 중 오류 발생: 잘못된 API 키입니다. API 키를 다시 확인해 주세요.")
         else:
-            st.error(f"🚨 OpenAI API 호출 중 오류 발생: {e}"
+            st.error(f"🚨 OpenAI API 호출 중 오류 발생: {e}")
