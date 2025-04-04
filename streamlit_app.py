@@ -30,8 +30,8 @@ for message in st.session_state.messages:
 
 if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
 
-     st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
             st.markdown(prompt)
 
  stream = client.chat.completions.create(
