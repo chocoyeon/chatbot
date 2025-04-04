@@ -44,6 +44,6 @@ stream = client.chat.completions.create(
     )
 
 with st.chat_message("assistant"):
-        assistant_response = response.choices[0].message.content
-        st.markdown(assistant_response)
+    assistant_response = response.choices[0].message.content
+    st.markdown(assistant_response)
 st.session_state.messages.append({"role": "assistant", "content": assistant_response})
