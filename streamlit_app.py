@@ -34,16 +34,12 @@ if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요 ^^"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-stream = client.chat.completions.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {"role": m["role"], "content": m["content"]}
-            for m in st.session_state.messages
-        ],
-        stream=True,
+        messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
     )
 
-with st.chat_message("assistant"):
-    assistant_response = response.choices[0].message.content
-    st.markdown(assistant_response)
-st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+    with st.chat_message("assistant"):
+        assistant_response = response.choices[0].message.content
+        st.markdown(assistant_response)
+    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
