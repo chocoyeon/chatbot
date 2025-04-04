@@ -31,12 +31,6 @@ if "messages" not in st.session_state:
         {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
     ]
 
-# 기존 메시지 출력 - 초기 메시지 출력 후에 사용자 입력을 받을 수 있도록 순서 변경
-if len(st.session_state.messages) > 0:
-    for message in st.session_state.messages[-1:]:  # 최신 메시지만 표시
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
 # 사용자 입력 받기
 prompt = st.chat_input("무엇이든 편하게 이야기해 주세요.")
 
