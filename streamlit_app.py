@@ -3,7 +3,7 @@ import openai
 import os
 
 # 챗봇 UI - 소개글
-st.title("💖 마음솔")
+st.title("💖 마음솔 💖")
 st.markdown(
     "혼자 고민하기 어려운 순간, 가볍게 이야기 나눌 수 있는 마음 토크 친구예요. 💛  \n"
     "어떤 이야기도 괜찮아요. 편안한 마음으로 찾아와 주세요. 😊  \n"
