@@ -32,10 +32,11 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
     ]
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
+    
+if len(st.session_state.messages) > 0:
+    for message in st.session_state.messages[-1:]:  # 최신 메시지만 표시
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
 # 사용자 입력 받기
 if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
@@ -43,17 +44,12 @@ if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    stream = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": m["role"], "content": m["content"]}
-            for m in st.session_state.messages
-        ],
-        stream=True,
-    )
+   try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
+        )
 
-
-    
         # 응답 데이터 확인 및 저장
         if response and response.choices:
             assistant_response = response.choices[0].message.content
@@ -69,4 +65,4 @@ if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
         if "401" in str(e):
             st.error("🚨 OpenAI API 호출 중 오류 발생: 잘못된 API 키입니다. API 키를 다시 확인해 주세요.")
         else:
-            st.error(f"🚨 OpenAI API 호출 중 오류 발생: {e}")
+            st.error(f"🚨 OpenAI API 호출 중 오류 발생: {e}"
