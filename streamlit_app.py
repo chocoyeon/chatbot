@@ -11,7 +11,7 @@ st.write(
 )
 
 
-openai_api_key = st.text_input("🔑 아래 OpenAI API Key를 입력해 주세요 😊", type="password")
+openai_api_key = st.text_input("🔑 OpenAI API Key를 입력해 주세요 😊", type="password")
 
 if not openai_api_key:
     st.warning("🔒 OpenAI API Key를 입력해야 대화를 시작할 수 있어요!", icon="🗝️")
@@ -35,12 +35,14 @@ if prompt := st.chat_input("무엇이든 편하게 이야기해 주세요."):
         st.markdown(prompt)
 
 stream = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
-    stream=True,
-        )
-
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages
+        ],
+        stream=True,
+    )
 
 with st.chat_message("assistant"):
-    response = st.write_stream(stream)
+        response = st.write_stream(stream)
     st.session_state.messages.append({"role": "assistant", "content": response})
