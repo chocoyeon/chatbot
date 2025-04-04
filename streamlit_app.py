@@ -2,13 +2,13 @@ import streamlit as st
 import openai
 import os
 
-# 챗봇 UI - 소개글 표시
+# 챗봇 UI - 소개글
 st.title("💖 마음솔")
 st.write("혼자 고민하기 어려운 순간, 가볍게 이야기 나눌 수 있는 마음 토크 친구예요. 💛<br>"
          "어떤 이야기도 괜찮아요. 편안한 마음으로 찾아와 주세요. 😊<br>"
          "함께 생각해보고, 조금 더 가벼운 마음이 될 수 있도록 도와드릴게요!")
 
-# API 키 입력란 (소개글 아래에 위치)
+# API 키 입력란 
 openai_api_key = os.getenv("OPENAI_API_KEY", st.secrets.get("OPENAI_API_KEY"))
 
 if not openai_api_key:
@@ -25,7 +25,7 @@ except Exception as e:
     st.error(f"🚨 OpenAI API 클라이언트를 생성하는 중 오류 발생: {e}")
     st.stop()
 
-# 초기 메시지 설정
+# 초기 메시지
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
