@@ -2,6 +2,9 @@ import streamlit as st
 from openai import OpenAI
 import os
 
+if "openai_api_key" not in st.session_state:
+    st.session_state.openai_api_key = os.getenv("OPENAI_API_KEY", st.secrets.get("OPENAI_API_KEY"))
+
 # Show title and description.
 st.title("💬 yeon's ChatBot")
 st.write(
@@ -10,13 +13,23 @@ st.write(
     "함께 생각해 보고, 조금 더 가벼운 마음이 될 수 있도록 도와드릴게요!"
 )
 
+if not st.session_state.openai_api_key:
+    st.session_state.openai_api_key = st.text_input("🔑 아래 OpenAI API Key를 입력해 주세요 😊", type="password")
+#openai_api_key = st.text_input("🔑 OpenAI API Key를 입력해 주세요 😊", type="password")
 
-openai_api_key = st.text_input("🔑 OpenAI API Key를 입력해 주세요 😊", type="password")
-
-if not openai_api_key:
+if not st.session_state.openai_api_key:
     st.warning("🔒 OpenAI API Key를 입력해야 대화를 시작할 수 있어요!", icon="🗝️")
-else:
-    client = OpenAI(api_key=openai_api_key)
+    st.stop()
+
+if "client" not in st.session_state:
+    try:
+        st.session_state.client = openai.OpenAI(api_key=st.session_state.openai_api_key)
+    except Exception as e:
+        st.error(f"🚨 OpenAI API 클라이언트를 생성하는 중 오류 발생: {e}")
+        st.stop()
+
+
+
 
 
 
