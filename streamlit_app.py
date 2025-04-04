@@ -11,9 +11,10 @@ st.write(
 )
 
 
-openai_api_key = st.text_input("OpenAI API Key", type="password")
+openai_api_key = st.text_input("🔑 아래 OpenAI API Key를 입력해 주세요 😊", type="password")
+
 if not openai_api_key:
-    st.warning("🔑 OpenAI API Key를 입력해 주세요 😊", icon="🗝️")
+    st.warning("🔒 OpenAI API Key를 입력해야 대화를 시작할 수 있어요!", icon="🗝️")
 else:
     client = OpenAI(api_key=openai_api_key)
 
