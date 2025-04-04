@@ -32,7 +32,6 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
     ]
-
 # 사용자 입력 받기
 prompt = st.chat_input("무엇이든 편하게 이야기해 주세요.")
 
