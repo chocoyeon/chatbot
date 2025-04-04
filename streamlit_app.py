@@ -22,17 +22,16 @@ if not openai_api_key:
 
 # OpenAI 클라이언트 생성
 try:
-    client = openai.OpenAI(api_key=openai_api_key)
-except Exception as e:
-    st.error(f"🚨 OpenAI API 클라이언트를 생성하는 중 오류 발생: {e}")
-    st.stop()
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
+        )
 
 # 초기 메시지
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "안녕하세요, 오늘은 어떤 대화를 하고 싶으신가요? 😊"}
     ]
-
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
