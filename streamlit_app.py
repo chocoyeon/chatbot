@@ -2,11 +2,11 @@ import streamlit as st
 import openai
 import os
 
-# 챗봇 UI - 소개글 먼저 표시
-st.title("💬 yeon's ChatBot")
+# 챗봇 UI - 소개글 표시
+st.title("🧠 yeon's ChatBot")
 st.write("혼자 고민하기 어려운 순간, 가볍게 이야기 나눌 수 있는 마음 토크 친구예요. 💛\n"
          "어떤 이야기도 괜찮아요. 편안한 마음으로 찾아와 주세요. 😊\n"
-         "함께 생각해 보고, 조금 더 가벼운 마음이 될 수 있도록 도와드릴게요!")
+         "함께 생각해보고, 조금 더 가벼운 마음이 될 수 있도록 도와드릴게요!")
 
 # API 키 입력란 (소개글 아래에 위치)
 openai_api_key = os.getenv("OPENAI_API_KEY", st.secrets.get("OPENAI_API_KEY"))
@@ -62,4 +62,8 @@ if prompt:
             st.error("⚠️ 응답이 비어 있습니다. 다시 시도해 주세요.")
 
     except Exception as e:
-        st.error(f"🚨 OpenAI API 호출 중 오류 발생: {e}")
+        # API 키 오류 메시지 추가
+        if "401" in str(e):
+            st.error("🚨 OpenAI API 호출 중 오류 발생: 잘못된 API 키입니다. API 키를 다시 확인해 주세요.")
+        else:
+            st.error(f"🚨 OpenAI API 호출 중 오류 발생: {e}")
