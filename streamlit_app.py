@@ -4,8 +4,7 @@ from openai import OpenAI
 # Show title and description.
 st.title("💬 yeon's ChatBot")
 st.write(
-    "고민이 있을 때 부담 없이 이야기할 수 있는 마음 talk 친구에요. 
-    언제든지 편한 마음으로 찾아와 주세요 ^^*"
+    "고민이 있을 때 부담 없이 이야기할 수 있는 마음 talk 친구에요. 언제든지 편한 마음으로 찾아와 주세요 ^^*"
 )
 
 # Ask user for their OpenAI API key via `st.text_input`.
